@@ -42,7 +42,8 @@ namespace CapaPresentacion
         private void btnHacerTest_Click(object sender, EventArgs e)
         {
             int distancia = 0;
-            ListaPreguntas = Program.acceso.DevolverPreguntasPorTest((cboTest.SelectedItem as Test).Id,out mensaje);
+            //prueba no olvidarse de cambiarlo desppues (cboTest.SelectedItem as Test).Id
+            ListaPreguntas = Program.acceso.DevolverPreguntasPorTest(2,out mensaje);
             if (ListaPreguntas.Count() == 0)
             {
                 MessageBox.Show("Error, este test no tiene preguntas disponibles.");
@@ -98,7 +99,12 @@ namespace CapaPresentacion
             {
                 foreach (CheckBox cb in listaCb)
                 {
+                    
                     if (cb.Checked && preg.Respuesta == true)
+                    {
+                        validas += 1;
+                    }
+                    if (cb.Checked == false && preg.Respuesta == false)
                     {
                         validas += 1;
                     }
@@ -112,6 +118,7 @@ namespace CapaPresentacion
 
                     }
                 }
+                
                 break;
             }
             MessageBox.Show($"Has acertado {validas} preguntas");
