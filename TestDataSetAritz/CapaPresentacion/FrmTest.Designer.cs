@@ -35,6 +35,7 @@
             // 
             // cboCat
             // 
+            this.cboCat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboCat.FormattingEnabled = true;
             this.cboCat.Location = new System.Drawing.Point(141, 84);
             this.cboCat.Name = "cboCat";
@@ -44,6 +45,7 @@
             // 
             // cboTest
             // 
+            this.cboTest.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTest.FormattingEnabled = true;
             this.cboTest.Location = new System.Drawing.Point(475, 84);
             this.cboTest.Name = "cboTest";

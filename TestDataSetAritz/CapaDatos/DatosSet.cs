@@ -15,6 +15,7 @@ namespace CapaDatos
         DataSetTest ds = new DataSetTest();
         CategoriasTableAdapter dsCategorias = new CategoriasTableAdapter();
         PreguntasTableAdapter dsPreguntas = new PreguntasTableAdapter();
+        TestCategoriasTableAdapter dsTestCategorias = new TestCategoriasTableAdapter();
         TestsTableAdapter dsTests = new TestsTableAdapter();
         public DatosSet()
         {
@@ -22,7 +23,7 @@ namespace CapaDatos
             dsCategorias.Fill(ds.Categorias);
             dsPreguntas.Fill(ds.Preguntas);
             dsTests.Fill(ds.Tests);
-            
+            dsTestCategorias.Fill(ds.TestCategorias);
 
             if (ds.Tables.Count == 0)
             {
@@ -64,7 +65,7 @@ namespace CapaDatos
         }
         public ReadOnlyCollection<Test> DevolverTestPorCategoria(int IdCat, out string msg)
         {
-            msg = "";
+           msg = "";
             
             CategoriasRow drCategorias = ds.Categorias.FindById(IdCat);
             if (drCategorias ==null)

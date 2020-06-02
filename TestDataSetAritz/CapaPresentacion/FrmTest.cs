@@ -36,14 +36,27 @@ namespace CapaPresentacion
             cboTest.Items.Clear();
             cboTest.Items.AddRange(Program.acceso.DevolverTestPorCategoria((cboCat.SelectedItem as Categoria).Id, out  mensaje).ToArray());
             cboTest.DisplayMember = "Nombre";
-            MessageBox.Show(mensaje);
+            if(mensaje!="")
+            {
+                MessageBox.Show(mensaje);
+            }
+            
         }
 
         private void btnHacerTest_Click(object sender, EventArgs e)
         {
+            if(cboCat.SelectedItem == null && cboTest.SelectedItem == null)
+            {
+                MessageBox.Show("No has seleccionado ninguna categoria ni test");
+                return;
+            }
+            if(cboTest.SelectedItem == null)
+            {
+                MessageBox.Show("No has seleccionado ningun test");
+            }
             int distancia = 0;
-            //prueba no olvidarse de cambiarlo desppues (cboTest.SelectedItem as Test).Id
-            ListaPreguntas = Program.acceso.DevolverPreguntasPorTest(2,out mensaje);
+
+            ListaPreguntas = Program.acceso.DevolverPreguntasPorTest((cboTest.SelectedItem as Test).Id, out mensaje);
             if (ListaPreguntas.Count() == 0)
             {
                 MessageBox.Show("Error, este test no tiene preguntas disponibles.");
@@ -94,6 +107,7 @@ namespace CapaPresentacion
         }
         private void btnHacer_Click(object sender, EventArgs e)
         {
+            
             int validas = 0;
             foreach (Pregunta preg in ListaPreguntas)
             {
@@ -104,7 +118,7 @@ namespace CapaPresentacion
                     {
                         validas += 1;
                     }
-                    if (cb.Checked == false && preg.Respuesta == false)
+                    else if (cb.Checked == false && preg.Respuesta == false)
                     {
                         validas += 1;
                     }
