@@ -42,9 +42,11 @@ namespace CapaPresentacion
             }
             
         }
-
+        // 
         private void btnHacerTest_Click(object sender, EventArgs e)
         {
+            // No tiene sentido que en cada clic del botón se vayan creando paneles uno encima de otro, ... 
+            // TODO ¿cuántos botones hay para Hacer Test? 
             if(cboCat.SelectedItem == null && cboTest.SelectedItem == null)
             {
                 MessageBox.Show("No has seleccionado ninguna categoria ni test");
@@ -52,10 +54,10 @@ namespace CapaPresentacion
             }
             if(cboTest.SelectedItem == null)
             {
-                MessageBox.Show("No has seleccionado ningun test");
+                MessageBox.Show("No has seleccionado ningun test"); 
             }
             int distancia = 0;
-
+            // TODO Si no se selecciona test SE ROMPE
             ListaPreguntas = Program.acceso.DevolverPreguntasPorTest((cboTest.SelectedItem as Test).Id, out mensaje);
             if (ListaPreguntas.Count() == 0)
             {
@@ -101,7 +103,7 @@ namespace CapaPresentacion
             btnCancelar.Text = "Cancelar";
             btnCancelar.Click += new EventHandler(btnCancelar_Click);
             this.Controls.Add(panel1);
-            panel1.Controls.Add(btnHacer);
+            panel1.Controls.Add(btnHacer); 
             panel1.Controls.Add(btnCancelar);
 
         }

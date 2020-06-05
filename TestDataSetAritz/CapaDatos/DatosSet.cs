@@ -10,8 +10,10 @@ using static CapaDatos.DataSetTest;
 
 namespace CapaDatos
 {
+    // TODO Debes cambiar la BD, ya Preguntas tenía mal la clave.
    public class DatosSet
     {
+        // TODO No hay control de la BD, si no existe se producirá un error de ejecución. Debes contemplar el caso y conseguir que el usuario o usuaria final se entere del problema (y que por supuesto no se rompa)
         DataSetTest ds = new DataSetTest();
         CategoriasTableAdapter dsCategorias = new CategoriasTableAdapter();
         PreguntasTableAdapter dsPreguntas = new PreguntasTableAdapter();
@@ -25,13 +27,13 @@ namespace CapaDatos
             dsTests.Fill(ds.Tests);
             dsTestCategorias.Fill(ds.TestCategorias);
 
-            if (ds.Tables.Count == 0)
+            if (ds.Tables.Count == 0) // ¿Que sentido tiene esto?
             {
                 return;
             }
             
         }
-        public List<Pregunta> DevolverPreguntasPorTest(int IdTest, out string msg)
+        public List<Pregunta> DevolverPreguntasPorTest(int IdTest, out string msg) // TODO Haces lo que siempre digo que no hay que hacer. Buscas entre TODAS las preguntas (pueden ser miles) en lugar de buscar el test (que por cierto no controlas que puede no existir) y de ese SUS preguntas (que ya serán pocas) --> Error fundamental
         {
             msg = "";
             
@@ -56,7 +58,7 @@ namespace CapaDatos
             List<Categoria> categorias = (from cat in drCategoria
                                         select new Categoria(cat.Id, cat.Nombre)).ToList();
 
-            if (categorias == null)
+            if (categorias == null) // TODO Nunca puede serlo, analiza bien lo que será
             {
                 msg = "La lista de categorias esta vacia";
                 return null;
@@ -67,7 +69,7 @@ namespace CapaDatos
         {
            msg = "";
             
-            CategoriasRow drCategorias = ds.Categorias.FindById(IdCat);
+            CategoriasRow drCategorias = ds.Categorias.FindById(IdCat); // TODO ¿Por qué el nombre es en plural si solo es 1?
             if (drCategorias ==null)
             {
                 msg = "La categoria no existe";
