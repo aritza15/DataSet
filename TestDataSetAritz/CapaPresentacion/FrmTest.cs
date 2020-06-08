@@ -45,6 +45,7 @@ namespace CapaPresentacion
         // 
         private void btnHacerTest_Click(object sender, EventArgs e)
         {
+            btnHacerTest.Enabled = false;
             // No tiene sentido que en cada clic del botón se vayan creando paneles uno encima de otro, ... 
             // TODO ¿cuántos botones hay para Hacer Test? 
             if(cboCat.SelectedItem == null && cboTest.SelectedItem == null)
@@ -54,7 +55,8 @@ namespace CapaPresentacion
             }
             if(cboTest.SelectedItem == null)
             {
-                MessageBox.Show("No has seleccionado ningun test"); 
+                MessageBox.Show("No has seleccionado ningun test");
+                return;
             }
             int distancia = 0;
             // TODO Si no se selecciona test SE ROMPE
@@ -113,14 +115,13 @@ namespace CapaPresentacion
             int validas = 0;
             foreach (Pregunta preg in ListaPreguntas)
             {
-                foreach (CheckBox cb in listaCb)
-                {
+                
                     
-                    if (cb.Checked && preg.Respuesta == true)
+                    if (listaCb[ListaPreguntas.IndexOf(preg)].Checked && preg.Respuesta == true)
                     {
                         validas += 1;
                     }
-                    else if (cb.Checked == false && preg.Respuesta == false)
+                    else if (listaCb[ListaPreguntas.IndexOf(preg)].Checked==false && preg.Respuesta == false)
                     {
                         validas += 1;
                     }
@@ -128,19 +129,21 @@ namespace CapaPresentacion
                     {
                         PictureBox pb = new PictureBox();
                         pb.Image = Image.FromFile("../../../Icono/icono.png");
-                        pb.Location = new Point(cb.Location.X - 40, cb.Location.Y);
+                        pb.Location = new Point(listaCb[ListaPreguntas.IndexOf(preg)].Location.X - 40, listaCb[ListaPreguntas.IndexOf(preg)].Location.Y);
                         listaPb.Add(pb);
                         panel.Controls.Add(pb);
 
                     }
-                }
+                   
                 
-                break;
+                
+                
             }
             MessageBox.Show($"Has acertado {validas} preguntas");
         }
         private void btnCancelar_Click(object sender, EventArgs e)
         {
+            btnHacerTest.Enabled = true;
             foreach (PictureBox pb in listaPb)
             {
                 if (pb.Image != null)
@@ -158,9 +161,18 @@ namespace CapaPresentacion
             }
             listaPb.Clear();
             listaCb.Clear();
+            ListaPreguntas.Clear();
+            panel.Controls.Clear();
+            panel1.Controls.Clear();
             this.Controls.Remove(panel);
             this.Controls.Remove(panel1);
+           
             Size = new Size(700, 374);
+        }
+
+        private void cboTest_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblTest.Text = (cboTest.SelectedItem as Test).Nombre;
         }
     }
 }

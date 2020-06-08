@@ -21,7 +21,10 @@ namespace CapaDatos
         TestsTableAdapter dsTests = new TestsTableAdapter();
         public DatosSet()
         {
-
+            if(ds == null)
+            {
+                return;
+            }
             dsCategorias.Fill(ds.Categorias);
             dsPreguntas.Fill(ds.Preguntas);
             dsTests.Fill(ds.Tests);
@@ -36,10 +39,11 @@ namespace CapaDatos
         public List<Pregunta> DevolverPreguntasPorTest(int IdTest, out string msg) // TODO Haces lo que siempre digo que no hay que hacer. Buscas entre TODAS las preguntas (pueden ser miles) en lugar de buscar el test (que por cierto no controlas que puede no existir) y de ese SUS preguntas (que ya serán pocas) --> Error fundamental
         {
             msg = "";
-            
-            List<PreguntasRow> drPregunta;
-            drPregunta = ds.Preguntas.Where(drPreg => drPreg.IdTest == IdTest).ToList();
-            List<Pregunta> preguntas = (from preg in drPregunta
+
+            TestsRow drTests = ds.Tests.FindById(IdTest);
+
+            var drPreguntas = drTests.GetPreguntasRows();
+            List<Pregunta> preguntas = (from preg in drPreguntas
                                         select new Pregunta(preg.NPregunta, preg.Enunciado, preg.Respuesta)).ToList();
 
             if (preguntas == null)
@@ -58,7 +62,7 @@ namespace CapaDatos
             List<Categoria> categorias = (from cat in drCategoria
                                         select new Categoria(cat.Id, cat.Nombre)).ToList();
 
-            if (categorias == null) // TODO Nunca puede serlo, analiza bien lo que será
+            if (categorias.Count()==0) // TODO Nunca puede serlo, analiza bien lo que será
             {
                 msg = "La lista de categorias esta vacia";
                 return null;
@@ -69,12 +73,12 @@ namespace CapaDatos
         {
            msg = "";
             
-            CategoriasRow drCategorias = ds.Categorias.FindById(IdCat); // TODO ¿Por qué el nombre es en plural si solo es 1?
-            if (drCategorias ==null)
+            CategoriasRow drCategoria = ds.Categorias.FindById(IdCat); // TODO ¿Por qué el nombre es en plural si solo es 1?
+            if (drCategoria ==null)
             {
                 msg = "La categoria no existe";
             }
-            var drTestCategorias = drCategorias.GetTestCategoriasRows().ToList();
+            var drTestCategorias = drCategoria.GetTestCategoriasRows().ToList();
             var tests = (from test in drTestCategorias
                                 select new Test(test.IdTest, test.TestsRow.Nombre)).ToList();
 
